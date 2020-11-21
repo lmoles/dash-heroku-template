@@ -80,7 +80,7 @@ bcg = 'mintcream'
 alt1 = 'darkseagreen'
 alt2 = 'ivory'
 alt_txt = 'white'
-wd1 = 500
+wd1 = 650
 
 
 # table
@@ -104,7 +104,7 @@ gss_clean.male_breadwinner = gss_clean.male_breadwinner.cat.reorder_categories([
 bars = gss_clean.groupby(['sex','male_breadwinner']).size().reset_index().rename(columns={0:'count'})
 barplot = px.bar(bars, x='male_breadwinner', y='count', color='sex', barmode='group',
                  labels={'count':'Count', 'male_breadwinner':'Response', 'sex':'Sex'}) 
-barplot.update_layout(height=400, width=wd1,
+barplot.update_layout(height=600, width=wd1,
                      paper_bgcolor=alt1,
                       plot_bgcolor=bcg,
                      font={'color':alt_txt})
@@ -114,7 +114,7 @@ fig_scatter = px.scatter(gss_clean, x='job_prestige', y='income', color='sex',
                          hover_data=['education','socioeconomic_index'],
                          trendline='ols',
                          labels={'income':'Income', 'job_prestige':'Occupational Prestige', 'sex':'Sex'})
-fig_scatter.update_layout(height=350, width=wd1,
+fig_scatter.update_layout(height=500, width=wd1,
                          paper_bgcolor=alt1,
                          plot_bgcolor=bcg,
                          font={'color':alt_txt})
@@ -211,8 +211,10 @@ app.layout = html.Div(
             dcc.Graph(figure=fig_scatter)
         ], style={'width': '50%', 'float': 'right'}),
         
-        html.H2('Income by Prestige Categories'),
-        dcc.Graph(figure=boxes)
+        html.Div([
+            html.H2('Income by Prestige Categories'),
+            dcc.Graph(figure=boxes)
+        ], style={'align':'center'})
     ],
     style={'backgroundColor':bcg}
 )
@@ -225,7 +227,7 @@ def make_figure(x, color):
     bars = gss_clean.groupby([color,x]).size().reset_index().rename(columns={0:'count'})
     barplot = px.bar(bars, x=x, y='count', color=color, barmode='group',
                          labels={'count':'Count', x:'Response'}) 
-    barplot.update_layout(height=300, width = wd1,
+    barplot.update_layout(height=450, width = wd1,
                           paper_bgcolor=alt1,
                          plot_bgcolor=bcg,
                          font={'color':alt_txt})
