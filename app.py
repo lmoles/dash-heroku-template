@@ -178,34 +178,22 @@ app.layout = html.Div(
         dcc.Graph(figure=table),
         html.H2('Responses to Survey Questions'),
         html.Div([
-            html.H4('Question'),
-            dcc.Dropdown(id='question',
-                    options=[{'label': i, 'value': i} for i in questions],
-                    value='male_breadwinner'),
-            html.H4('Grouping'),
-            dcc.Dropdown(id='color',
-                    options=[{'label': i, 'value': i} for i in groups],
-                    value='sex')
-        ], style={'width': '25%', 'float': 'left'}),
-        html.Div([
-            dcc.Graph(id='graph')
-        ], style={'width': '70%', 'float': 'right', 'display':'inline-block'}),
-        html.H2('Responses to Survey Questions'),
-        html.Div([
-            html.H4('Question'),
-            dcc.Dropdown(id='question',
-                        options=[{'label': i, 'value': i} for i in questions],
-                        value='male_breadwinner'
-                        ),
-            html.H4('Grouping'),
-            dcc.Dropdown(id='color',
-                        options=[{'label': i, 'value': i} for i in groups],
-                        value='sex'
-                        )
-        ], style={'width': '25%', 'float': 'left'}),
-        html.Div([
-            dcc.Graph(id='graph')
-        ], style={'width': '70%', 'float': 'right', 'display':'inline-block'}),
+            html.Div([
+                html.H4('Question'),
+                dcc.Dropdown(id='question',
+                            options=[{'label': i, 'value': i} for i in questions],
+                            value='male_breadwinner'
+                            ),
+                html.H4('Grouping'),
+                dcc.Dropdown(id='color',
+                            options=[{'label': i, 'value': i} for i in groups],
+                            value='sex'
+                            )
+            ], style={'width': '25%', 'float': 'left'}),
+            html.Div([
+                dcc.Graph(id='graph')
+            ], style={'width': '70%', 'float': 'right', 'display':'inline-block'})
+        ]),
         html.H2('Comparing Income and Job Prestige'),
         dcc.Graph(figure=fig_scatter),
         html.H2('Income by Sex'),
