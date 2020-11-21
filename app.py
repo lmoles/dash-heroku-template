@@ -80,7 +80,8 @@ bcg = 'mintcream'
 alt1 = 'darkseagreen'
 alt2 = 'ivory'
 alt_txt = 'white'
-wd1 = 650
+wd1 = 600
+wd2 = 700
 
 
 # table
@@ -114,7 +115,7 @@ fig_scatter = px.scatter(gss_clean, x='job_prestige', y='income', color='sex',
                          hover_data=['education','socioeconomic_index'],
                          trendline='ols',
                          labels={'income':'Income', 'job_prestige':'Occupational Prestige', 'sex':'Sex'})
-fig_scatter.update_layout(height=500, width=wd1,
+fig_scatter.update_layout(height=500, width=wd2,
                          paper_bgcolor=alt1,
                          plot_bgcolor=bcg,
                          font={'color':alt_txt})
@@ -123,7 +124,7 @@ fig_scatter.update_layout(height=500, width=wd1,
 box1 = px.box(gss_clean, x='income', y='sex', color='sex',
              labels={'income':'Income', 'sex':'Sex'})
 box1.update_layout(showlegend=False,
-                   height=350, width=wd1,
+                   height=325, width=wd1,
                    paper_bgcolor=alt1,
                    plot_bgcolor=bcg,
                    font={'color':alt_txt})
@@ -132,7 +133,7 @@ box1.update_layout(showlegend=False,
 box2 = px.box(gss_clean, x='job_prestige', y='sex', color='sex',
              labels={'job_prestige':'Occupational Prestige', 'sex':'Sex'})
 box2.update_layout(showlegend=False,
-                   height=350, width=wd1,
+                   height=325, width=wd1,
                    paper_bgcolor=alt1,
                    plot_bgcolor=bcg,
                    font={'color':alt_txt})
@@ -199,7 +200,7 @@ app.layout = html.Div(
                 html.Div([
                     dcc.Graph(id='graph')
                 ], style={'width': '70%', 'float': 'right', 'display':'inline-block'})
-            ], style={'width':'60%', 'float':'left'})
+            ], style={'width':'60%', 'float':'left','backgroundColor':bcg})
         ]),
         
         html.Div([
@@ -207,17 +208,17 @@ app.layout = html.Div(
             dcc.Graph(figure=box1),
             html.H2('Occupational Prestige by Sex'),
             dcc.Graph(figure=box2)
-        ], style={'width': '40%', 'float': 'right'}),
+        ], style={'width': '36%', 'float': 'right','backgroundColor':bcg}),
         
         html.Div([
             html.H2('Income by Prestige Categories'),
             dcc.Graph(figure=boxes)
-        ], style={'width': '60%', 'float': 'left'}),
+        ], style={'width': '60%', 'float': 'left','backgroundColor':bcg}),
         
         html.Div([
             html.H2('Comparing Income and Job Prestige'),
             dcc.Graph(figure=fig_scatter)
-        ], style={'width': '40%', 'float': 'right'}),
+        ], style={'width': '40%', 'float': 'right','backgroundColor':bcg}),
     ],
     style={'backgroundColor':bcg}
 )
