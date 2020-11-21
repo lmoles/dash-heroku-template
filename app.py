@@ -91,7 +91,7 @@ tabs = tabs.reset_index().rename(columns={'job_prestige':'Occupational Prestige'
                                   'education':'Education',
                                   'sex':'Sex'})
 table = ff.create_table(tabs, colorscale=[alt1,alt2,bcg])
-table.update_layout(height=180, width=wd1,
+table.update_layout(height=180, width=850,
                    paper_bgcolor=alt1,
                    plot_bgcolor=alt1)
 
@@ -176,17 +176,10 @@ app.layout = html.Div(
             html.H1('Understanding the Gender Wage Gap'),
             html.Div([
                 dcc.Markdown(children = md_txt, style={'color':alt_txt})
-            ], style={'backgroundColor':alt1})
-        ]),
-        
-        html.Div([
+            ], style={'backgroundColor':alt1}),
             html.H2('Average Results by Gender'),
-            dcc.Graph(figure=table),
-            html.H2('Income by Sex'),
-            dcc.Graph(figure=box1),
-            html.H2('Occupational Prestige by Sex'),
-            dcc.Graph(figure=box2)
-        ], style={'width': '50%', 'float': 'left'}),
+            dcc.Graph(figure=table)
+        ]),
         
         html.Div([
             html.H2('Responses to Survey Questions'),
@@ -206,15 +199,25 @@ app.layout = html.Div(
                 html.Div([
                     dcc.Graph(id='graph')
                 ], style={'width': '70%', 'float': 'right', 'display':'inline-block'})
-            ]),
-            html.H2('Comparing Income and Job Prestige'),
-            dcc.Graph(figure=fig_scatter)
-        ], style={'width': '50%', 'float': 'right'}),
+            ], style={'width':'60%', 'float':'left'})
+        ]),
+        
+        html.Div([
+            html.H2('Income by Sex'),
+            dcc.Graph(figure=box1),
+            html.H2('Occupational Prestige by Sex'),
+            dcc.Graph(figure=box2)
+        ], style={'width': '40%', 'float': 'right'}),
         
         html.Div([
             html.H2('Income by Prestige Categories'),
             dcc.Graph(figure=boxes)
-        ], style={'align':'center'})
+        ], style={'width': '60%', 'float': 'left'}),
+        
+        html.Div([
+            html.H2('Comparing Income and Job Prestige'),
+            dcc.Graph(figure=fig_scatter)
+        ], style={'width': '40%', 'float': 'right'}),
     ],
     style={'backgroundColor':bcg}
 )
