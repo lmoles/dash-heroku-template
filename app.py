@@ -75,11 +75,12 @@ gss_clean.satjob = gss_clean.satjob.cat.reorder_categories(['very dissatisfied',
                                                            'mod. satisfied',
                                                            'very satisfied'])
 
-# set colors
+# set colors and sizes
 bcg = 'mintcream'
 alt1 = 'darkseagreen'
 alt2 = 'ivory'
 alt_txt = 'white'
+wd1 = 500
 
 
 # table
@@ -90,7 +91,7 @@ tabs = tabs.reset_index().rename(columns={'job_prestige':'Occupational Prestige'
                                   'education':'Education',
                                   'sex':'Sex'})
 table = ff.create_table(tabs, colorscale=[alt1,alt2,bcg])
-table.update_layout(height=180, width=800,
+table.update_layout(height=180, width=wd1,
                    paper_bgcolor=alt1,
                    plot_bgcolor=alt1)
 
@@ -103,7 +104,7 @@ gss_clean.male_breadwinner = gss_clean.male_breadwinner.cat.reorder_categories([
 bars = gss_clean.groupby(['sex','male_breadwinner']).size().reset_index().rename(columns={0:'count'})
 barplot = px.bar(bars, x='male_breadwinner', y='count', color='sex', barmode='group',
                  labels={'count':'Count', 'male_breadwinner':'Response', 'sex':'Sex'}) 
-barplot.update_layout(height=400, width=600,
+barplot.update_layout(height=400, width=wd1,
                      paper_bgcolor=alt1,
                       plot_bgcolor=bcg,
                      font={'color':alt_txt})
@@ -113,7 +114,7 @@ fig_scatter = px.scatter(gss_clean, x='job_prestige', y='income', color='sex',
                          hover_data=['education','socioeconomic_index'],
                          trendline='ols',
                          labels={'income':'Income', 'job_prestige':'Occupational Prestige', 'sex':'Sex'})
-fig_scatter.update_layout(height=600, width=800,
+fig_scatter.update_layout(height=350, width=wd1,
                          paper_bgcolor=alt1,
                          plot_bgcolor=bcg,
                          font={'color':alt_txt})
@@ -122,7 +123,7 @@ fig_scatter.update_layout(height=600, width=800,
 box1 = px.box(gss_clean, x='income', y='sex', color='sex',
              labels={'income':'Income', 'sex':'Sex'})
 box1.update_layout(showlegend=False,
-                   height=350, width=600,
+                   height=350, width=wd1,
                    paper_bgcolor=alt1,
                    plot_bgcolor=bcg,
                    font={'color':alt_txt})
@@ -131,7 +132,7 @@ box1.update_layout(showlegend=False,
 box2 = px.box(gss_clean, x='job_prestige', y='sex', color='sex',
              labels={'job_prestige':'Occupational Prestige', 'sex':'Sex'})
 box2.update_layout(showlegend=False,
-                   height=350, width=600,
+                   height=350, width=wd1,
                    paper_bgcolor=alt1,
                    plot_bgcolor=bcg,
                    font={'color':alt_txt})
@@ -170,40 +171,50 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(
     [
-        html.H1('Understanding the Gender Wage Gap'),
+        # header info
         html.Div([
-            dcc.Markdown(children = md_txt, style={'color':alt_txt})
-        ], style={'backgroundColor':alt1}),
-        html.H2('Average Results by Gender'),
-        dcc.Graph(figure=table),
-        html.H2('Responses to Survey Questions'),
-        html.Div([
+            html.H1('Understanding the Gender Wage Gap'),
             html.Div([
-                html.H4('Question'),
-                dcc.Dropdown(id='question',
-                            options=[{'label': i, 'value': i} for i in questions],
-                            value='male_breadwinner'
-                            ),
-                html.H4('Grouping'),
-                dcc.Dropdown(id='color',
-                            options=[{'label': i, 'value': i} for i in groups],
-                            value='sex'
-                            )
-            ], style={'width': '25%', 'float': 'left'}),
-            html.Div([
-                dcc.Graph(id='graph')
-            ], style={'width': '70%', 'float': 'right', 'display':'inline-block'})
+                dcc.Markdown(children = md_txt, style={'color':alt_txt})
+            ], style={'backgroundColor':alt1})
         ]),
-        html.H2('Comparing Income and Job Prestige'),
-        dcc.Graph(figure=fig_scatter),
-        html.H2('Income by Sex'),
-        dcc.Graph(figure=box1),
-        html.H2('Occupational Prestige by Sex'),
-        dcc.Graph(figure=box2),
+        
+        html.Div([
+            html.H2('Average Results by Gender'),
+            dcc.Graph(figure=table),
+            html.H2('Income by Sex'),
+            dcc.Graph(figure=box1),
+            html.H2('Occupational Prestige by Sex'),
+            dcc.Graph(figure=box2)
+        ], style={'width': '50%', 'float': 'left'}),
+        
+        html.Div([
+            html.H2('Responses to Survey Questions'),
+            html.Div([
+                html.Div([
+                    html.H4('Question'),
+                    dcc.Dropdown(id='question',
+                                options=[{'label': i, 'value': i} for i in questions],
+                                value='male_breadwinner'
+                                ),
+                    html.H4('Grouping'),
+                    dcc.Dropdown(id='color',
+                                options=[{'label': i, 'value': i} for i in groups],
+                                value='sex'
+                                )
+                ], style={'width': '25%', 'float': 'left'}),
+                html.Div([
+                    dcc.Graph(id='graph')
+                ], style={'width': '70%', 'float': 'right', 'display':'inline-block'})
+            ]),
+            html.H2('Comparing Income and Job Prestige'),
+            dcc.Graph(figure=fig_scatter)
+        ], style={'width': '50%', 'float': 'right'}),
+        
         html.H2('Income by Prestige Categories'),
         dcc.Graph(figure=boxes)
     ],
-    style={'backgroundColor':bcg, 'columnCount':2}
+    style={'backgroundColor':bcg}
 )
 
 @app.callback(Output(component_id='graph',component_property='figure'), 
@@ -214,7 +225,7 @@ def make_figure(x, color):
     bars = gss_clean.groupby([color,x]).size().reset_index().rename(columns={0:'count'})
     barplot = px.bar(bars, x=x, y='count', color=color, barmode='group',
                          labels={'count':'Count', x:'Response'}) 
-    barplot.update_layout(height=400, width = 800,
+    barplot.update_layout(height=300, width = wd1,
                           paper_bgcolor=alt1,
                          plot_bgcolor=bcg,
                          font={'color':alt_txt})
