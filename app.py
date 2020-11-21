@@ -203,7 +203,7 @@ app.layout = html.Div(
         html.H2('Income by Prestige Categories'),
         dcc.Graph(figure=boxes)
     ],
-    style={'backgroundColor':bcg}
+    style={'backgroundColor':bcg, 'columnCount':2}
 )
 
 @app.callback(Output(component_id='graph',component_property='figure'), 
@@ -214,7 +214,8 @@ def make_figure(x, color):
     bars = gss_clean.groupby([color,x]).size().reset_index().rename(columns={0:'count'})
     barplot = px.bar(bars, x=x, y='count', color=color, barmode='group',
                          labels={'count':'Count', x:'Response'}) 
-    barplot.update_layout(paper_bgcolor=alt1,
+    barplot.update_layout(height=400, width = 800,
+                          paper_bgcolor=alt1,
                          plot_bgcolor=bcg,
                          font={'color':alt_txt})
     return barplot
